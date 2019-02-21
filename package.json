@@ -1,0 +1,27 @@
+{
+  "name": "income-and-expenses-back-end",
+  "version": "1.0.0",
+  "description": "Back end for income and expenses application",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "watch": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PekkaPek/income-and-expenses-back-end.git"
+  },
+  "author": "Pekka Pekkonen",
+  "license": "UNLICENCED",
+  "bugs": {
+    "url": "https://github.com/PekkaPek/income-and-expenses-back-end/issues"
+  },
+  "homepage": "https://github.com/PekkaPek/income-and-expenses-back-end#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}
