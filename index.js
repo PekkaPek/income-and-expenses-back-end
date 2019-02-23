@@ -31,15 +31,25 @@ let entries = [
   }
 ]
 
+let nextId = 5
+
 app.get('/api/entries', (req,res) => {
   res.json(entries)
+})
+
+app.post('/api/entries', (req, res) => {
+  const newEntry = req.body
+  newEntry.date = new Date()
+  newEntry.id = nextId++
+  entries = entries.concat(newEntry)
+  res.status(201).json(newEntry)
 })
 
 app.delete('/api/entries/:id', (req, res) => {
   const id = Number(req.params.id)
   removedEntry = entries.find(entry => entry.id === id)
   if(!removedEntry) {
-    return res.json(404, {error: 'id is not found'} )
+    return res.status(404).json({error: 'id is not found'} )
   }
   entries = entries.filter(entry => entry.id !== id)
   res.json(removedEntry)
