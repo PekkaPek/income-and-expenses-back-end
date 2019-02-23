@@ -45,6 +45,16 @@ app.post('/api/entries', (req, res) => {
   res.status(201).json(newEntry)
 })
 
+app.put('/api/entries', (req, res) => {
+  const modifiedEntry = req.body
+  const originalEntry = entries.find(entry => entry.id === modifiedEntry.id)
+  if(!originalEntry) {
+    return res.status(404).json({error: 'id is not found'} )
+  }
+  entries = entries.map(entry => entry.id !== modifiedEntry.id ? entry : modifiedEntry)
+  res.json(modifiedEntry)
+})
+
 app.delete('/api/entries/:id', (req, res) => {
   const id = Number(req.params.id)
   removedEntry = entries.find(entry => entry.id === id)
