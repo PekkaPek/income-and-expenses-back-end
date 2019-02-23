@@ -32,6 +32,16 @@ app.get('/api/entries', (req,res) => {
   res.json(entries)
 })
 
+app.delete('/api/entries/:id', (req, res) => {
+  const id = Number(req.params.id)
+  removedEntry = entries.find(entry => entry.id === id)
+  if(!removedEntry) {
+    return res.json(404, {error: 'id is not found'} )
+  }
+  entries = entries.filter(entry => entry.id !== id)
+  res.json(removedEntry)
+})
+
 const PORT = 3002
 app.listen(PORT, () => {
   console.log('Server is running on port', PORT)
