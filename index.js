@@ -41,7 +41,6 @@ app.get('/api/entries', (req,res) => {
 
 app.post('/api/entries', (req, res) => {
   const newEntry = req.body
-  newEntry.date = new Date()
   newEntry.id = nextId++
   entries = entries.concat(newEntry)
   res.status(201).json(newEntry)
@@ -53,8 +52,9 @@ app.put('/api/entries', (req, res) => {
   if(!originalEntry) {
     return res.status(404).json({error: 'id is not found'} )
   }
-  entries = entries.map(entry => entry.id !== modifiedEntry.id ? entry : modifiedEntry)
-  res.json(modifiedEntry)
+  entryToBeSaved = {...modifiedEntry, date: new Date(modifiedEntry.date)}
+  entries = entries.map(entry => entry.id !== entryToBeSaved.id ? entry : entryToBeSaved)
+  res.json(entryToBeSaved)
 })
 
 app.delete('/api/entries/:id', (req, res) => {
