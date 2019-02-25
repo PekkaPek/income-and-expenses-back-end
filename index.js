@@ -10,7 +10,7 @@ let entries = [
   {
     id: 1,
     type: 'expense',
-    date: new Date('2019-02-01'),
+    date: new Date('2019-01-01'),
     amount: 1.99
   },
   {
@@ -36,7 +36,9 @@ let entries = [
 let nextId = 5
 
 app.get('/api/entries', (req,res) => {
-  res.json(entries)
+  const currentMonth = new Date().getMonth()
+  const entriesByMonth = entries.filter(entry => entry.date.getMonth() === currentMonth)
+  res.json(entriesByMonth)
 })
 
 app.post('/api/entries', (req, res) => {
