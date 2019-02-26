@@ -36,8 +36,21 @@ let entries = [
 let nextId = 5
 
 app.get('/api/entries', (req,res) => {
-  const currentMonth = new Date().getMonth()
-  const entriesByMonth = entries.filter(entry => entry.date.getMonth() === currentMonth)
+  let entriesByMonth = []
+  if (req.query.y && req.query.m) {
+    const providedYear = Number(req.query.y)
+    const providedMonth = Number(req.query.m)
+    entriesByMonth = entries.filter(entry => {
+      if (entry.date.getFullYear() === providedYear) {
+        return entry.date.getMonth() === providedMonth
+      } else {
+        return false
+      }
+    })
+  } else {
+    const currentMonth = new Date().getMonth()
+    entriesByMonth = entries.filter(entry => entry.date.getMonth() === currentMonth)
+  }
   res.json(entriesByMonth)
 })
 
