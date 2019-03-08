@@ -77,10 +77,17 @@ app.get('/api/entries', (req,res) => {
 })
 
 app.post('/api/entries', (req, res) => {
-  const newEntry = {...req.body, date: new Date(req.body.date)}
-  newEntry.id = nextId++
-  entries = entries.concat(newEntry)
-  res.status(201).json(newEntry)
+  const newEntry = new Entry({
+    amount: req.body.amount,
+    date: new Date(req.body.date),
+    type: req.body.type
+  })
+  newEntry
+    .save()
+    .then(savedEntry => {
+      mongoose.connection.close()
+      res.status(201).json(Entry.formalize(savedEntry))
+    })
 })
 
 app.put('/api/entries', (req, res) => {
