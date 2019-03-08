@@ -1,10 +1,32 @@
 const express = require('express')
+const mongoose = require('mongoose')
+const credentials = require('./credentials.js')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const app = express()
 
 app.use(cors())
 app.use(bodyParser.json())
+
+const url = `mongodb://${credentials.username}:${credentials.password}@ds149732.mlab.com:49732/income-expenses-app-development`
+mongoose.connect(url, { useNewUrlParser: true })
+
+const EntrySchema = new mongoose.Schema({
+  type: String,
+  date: Date,
+  amount: Number
+})
+
+EntrySchema.statics.formalize = function (entry) {
+  return({
+    id: entry._id,
+    type: entry.type,
+    amount: entry.amount,
+    date: entry.date
+  })
+}
+
+const Entry = mongoose.model('Entry', EntrySchema)
 
 let entries = [
   {
