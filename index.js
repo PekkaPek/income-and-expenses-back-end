@@ -58,22 +58,28 @@ let entries = [
 let nextId = 5
 
 app.get('/api/entries', (req,res) => {
-  let entriesByMonth = []
+  let searchedYear = new Date().getFullYear()
+  let searchedMonth = new Date().getMonth() + 1
   if (req.query.y && req.query.m) {
-    const providedYear = Number(req.query.y)
-    const providedMonth = Number(req.query.m)
-    entriesByMonth = entries.filter(entry => {
-      if (entry.date.getFullYear() === providedYear) {
-        return entry.date.getMonth() === providedMonth
-      } else {
-        return false
-      }
-    })
-  } else {
-    const currentMonth = new Date().getMonth()
-    entriesByMonth = entries.filter(entry => entry.date.getMonth() === currentMonth)
+    searchedYear = Number(req.query.y)
+    searchedMonth = Number(req.query.m) + 1
   }
-  res.json(entriesByMonth)
+  Entry
+    .aggregate([
+    {
+      $addFields: {
+      "year": {$year: '$date'},
+      "month": {$month: '$date'}
+      }
+    },
+    {
+      $match: {year: searchedYear, month: searchedMonth}
+    }
+  ])
+    .then(entries => {
+    const entriesFormalized = entries.map(entry => Entry.formalize(entry))
+    res.json(entriesFormalized)
+    })
 })
 
 app.post('/api/entries', (req, res) => {
