@@ -91,7 +91,6 @@ app.post('/api/entries', (req, res) => {
   newEntry
     .save()
     .then(savedEntry => {
-      mongoose.connection.close()
       res.status(201).json(Entry.formalize(savedEntry))
     })
 })
