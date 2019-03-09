@@ -3,5 +3,6 @@ Content-Type: application/json
 
 {
   "type": "expense",
-  "amount": 2 
+  "amount": 1.85,
+  "date": "2019-02-26T00:00:00.000Z"
 }
