@@ -9,7 +9,13 @@ app.use(cors())
 app.use(bodyParser.json())
 
 const url = `mongodb://${credentials.username}:${credentials.password}@ds149732.mlab.com:49732/income-expenses-app-development`
-mongoose.connect(url, { useNewUrlParser: true })
+mongoose.connect(
+  url,
+  {
+    useNewUrlParser: true,
+    useFindAndModify: false
+  }
+)
 
 const EntrySchema = new mongoose.Schema({
   type: String,
@@ -96,14 +102,17 @@ app.post('/api/entries', (req, res) => {
 })
 
 app.put('/api/entries', (req, res) => {
-  const modifiedEntry = req.body
-  const originalEntry = entries.find(entry => entry.id === modifiedEntry.id)
-  if(!originalEntry) {
-    return res.status(404).json({error: 'id is not found'} )
+  const body = req.body
+  const modifiedEntry = {
+    type: body.type,
+    date: body.date,
+    amount: body.amount
   }
-  entryToBeSaved = {...modifiedEntry, date: new Date(modifiedEntry.date)}
-  entries = entries.map(entry => entry.id !== entryToBeSaved.id ? entry : entryToBeSaved)
-  res.json(entryToBeSaved)
+  Entry
+    .findByIdAndUpdate(body.id, modifiedEntry, { new: true })
+    .then(updatedNote => {
+      res.json(Entry.formalize(updatedNote))
+    })
 })
 
 app.delete('/api/entries/:id', (req, res) => {
