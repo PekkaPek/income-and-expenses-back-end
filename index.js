@@ -107,13 +107,12 @@ app.put('/api/entries', (req, res) => {
 })
 
 app.delete('/api/entries/:id', (req, res) => {
-  const id = Number(req.params.id)
-  removedEntry = entries.find(entry => entry.id === id)
-  if(!removedEntry) {
-    return res.status(404).json({error: 'id is not found'} )
-  }
-  entries = entries.filter(entry => entry.id !== id)
-  res.json(removedEntry)
+  const id = req.params.id
+  Entry
+    .findByIdAndDelete(id)
+    .then(removedEntry => {
+      res.json(Entry.formalize(removedEntry))
+    })
 })
 
 const PORT = 3002
