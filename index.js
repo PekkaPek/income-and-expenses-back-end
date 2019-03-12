@@ -34,35 +34,6 @@ EntrySchema.statics.formalize = function (entry) {
 
 const Entry = mongoose.model('Entry', EntrySchema)
 
-let entries = [
-  {
-    id: 1,
-    type: 'expense',
-    date: new Date('2019-01-01'),
-    amount: 1.99
-  },
-  {
-    id: 2,
-    type: 'expense',
-    date: new Date('2019-02-09'),
-    amount: 1.85
-  },
-  {
-    id: 3,
-    type: 'income',
-    date: new Date('2019-02-04'),
-    amount: 45
-  },
-  {
-    id: 4,
-    type: 'income',
-    date: new Date('2019-02-12'),
-    amount: 0.65
-  }
-]
-
-let nextId = 5
-
 app.get('/api/entries', (req,res) => {
   let searchedYear = new Date().getFullYear()
   let searchedMonth = new Date().getMonth() + 1
