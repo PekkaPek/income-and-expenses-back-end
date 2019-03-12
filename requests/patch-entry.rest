@@ -1,0 +1,7 @@
+PATCH http://localhost:3002/api/entries HTTP/1.1
+Content-Type: application/json
+
+{
+  "id": "5c84eed1b94cce0f89b41b66",
+  "amount": 63.80
+}

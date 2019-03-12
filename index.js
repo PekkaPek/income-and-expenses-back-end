@@ -72,7 +72,7 @@ app.post('/api/entries', (req, res) => {
     })
 })
 
-app.put('/api/entries', (req, res) => {
+app.patch('/api/entries', (req, res) => {
   const body = req.body
   const buildObjectFromBody = body => ({
     ...body.type && { type: body.type},
