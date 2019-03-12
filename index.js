@@ -103,11 +103,12 @@ app.post('/api/entries', (req, res) => {
 
 app.put('/api/entries', (req, res) => {
   const body = req.body
-  const modifiedEntry = {
-    type: body.type,
-    date: body.date,
-    amount: body.amount
-  }
+  const buildObjectFromBody = body => ({
+    ...body.type && { type: body.type},
+    ...body.amount && { amount: body.amount},
+    ...body.date && { date: body.date}
+  })
+  const modifiedEntry = buildObjectFromBody(body)
   Entry
     .findByIdAndUpdate(body.id, modifiedEntry, { new: true })
     .then(updatedNote => {
