@@ -25,6 +25,9 @@ app.get('/api/entries', (req,res) => {
     },
     {
       $match: {year: searchedYear, month: searchedMonth}
+    },
+    {
+      $sort: {date: 1}
     }
   ])
     .then(entries => {
