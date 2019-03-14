@@ -1,6 +1,5 @@
 const express = require('express')
-const mongoose = require('mongoose')
-const credentials = require('./credentials.js')
+const Entry = require('./models/entry')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const app = express()
@@ -8,31 +7,6 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json())
 
-const url = `mongodb://${credentials.username}:${credentials.password}@ds149732.mlab.com:49732/income-expenses-app-development`
-mongoose.connect(
-  url,
-  {
-    useNewUrlParser: true,
-    useFindAndModify: false
-  }
-)
-
-const EntrySchema = new mongoose.Schema({
-  type: String,
-  date: Date,
-  amount: Number
-})
-
-EntrySchema.statics.formalize = function (entry) {
-  return({
-    id: entry._id,
-    type: entry.type,
-    amount: entry.amount,
-    date: entry.date
-  })
-}
-
-const Entry = mongoose.model('Entry', EntrySchema)
 
 app.get('/api/entries', (req,res) => {
   let searchedYear = new Date().getFullYear()
