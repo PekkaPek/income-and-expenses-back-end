@@ -7,7 +7,6 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json())
 
-
 app.get('/api/entries', (req,res) => {
   let searchedYear = new Date().getFullYear()
   let searchedMonth = new Date().getMonth() + 1
@@ -19,12 +18,15 @@ app.get('/api/entries', (req,res) => {
     .aggregate([
     {
       $addFields: {
-      "year": {$year: '$date'},
-      "month": {$month: '$date'}
+        "year": {$year: '$date'},
+        "month": {$month: '$date'}
       }
     },
     {
-      $match: {year: searchedYear, month: searchedMonth}
+      $match: {
+        year: searchedYear,
+        month: searchedMonth
+      }
     },
     {
       $sort: {date: 1}
