@@ -71,7 +71,15 @@ app.delete('/api/entries/:id', (req, res) => {
   Entry
     .findByIdAndDelete(id)
     .then(removedEntry => {
-      res.json(Entry.formalize(removedEntry))
+      if (removedEntry) {
+        res.json(Entry.formalize(removedEntry))
+      } else {
+        res.status(404).json({ error: 'Entry with specified id is not found'})
+      }
+    })
+    .catch(error => {
+      console.log('error:', error)
+      res.status(400).json({ error: 'Entry id is malformatted' })
     })
 })
 
