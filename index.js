@@ -11,8 +11,16 @@ app.get('/api/entries', (req,res) => {
   let searchedYear = new Date().getFullYear()
   let searchedMonth = new Date().getMonth() + 1
   if (req.query.y && req.query.m) {
-    searchedYear = Number(req.query.y)
-    searchedMonth = Number(req.query.m) + 1
+    if ( req.query.y >= 1970 && req.query.y <= 2100) {
+      if (req.query.m >= 0 && req.query.m <= 11) {
+        searchedYear = Number(req.query.y)
+        searchedMonth = Number(req.query.m) + 1
+      } else {
+        res.status(400).json({ error: "Provided month must be between 0 and 11" })
+      }
+    } else {
+      res.status(400).json({ error: "Provided year must be between 1970 and 2100" })
+    }
   }
   Entry
     .aggregate([
