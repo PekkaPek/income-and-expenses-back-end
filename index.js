@@ -50,7 +50,7 @@ app.post('/api/entries', (req, res) => {
       res.status(201).json(Entry.formalize(savedEntry))
     })
     .catch( error => {
-      res.status(400).json({ error: error.message /*.errors.type.message */})
+      res.status(400).json({ error: error.message })
     })
 })
 
@@ -63,7 +63,7 @@ app.patch('/api/entries', (req, res) => {
   })
   const modifiedEntry = buildObjectFromBody(body)
   Entry
-    .findByIdAndUpdate(body.id, modifiedEntry, { new: true })
+    .findByIdAndUpdate(body.id, modifiedEntry, { runValidators: true, new: true })
     .then(updatedNote => {
       if (updatedNote) {
         res.json(Entry.formalize(updatedNote))
@@ -73,7 +73,7 @@ app.patch('/api/entries', (req, res) => {
     })
     .catch(error => {
       console.log('error:', error)
-      res.status(400).json({ error: 'Provided entry id is malformatted' })
+      res.status(400).json({ error: error.message })
     })
 })
 
