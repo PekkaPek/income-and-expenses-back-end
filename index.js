@@ -16,33 +16,33 @@ app.get('/api/entries', (req,res) => {
         searchedYear = Number(req.query.y)
         searchedMonth = Number(req.query.m) + 1
       } else {
-        return res.status(400).json({ error: "Provided month must be between 0 and 11" })
+        return res.status(400).json({ error: 'Provided month must be between 0 and 11' })
       }
     } else {
-      return res.status(400).json({ error: "Provided year must be between 1970 and 2100" })
+      return res.status(400).json({ error: 'Provided year must be between 1970 and 2100' })
     }
   }
   Entry
     .aggregate([
-    {
-      $addFields: {
-        "year": {$year: '$date'},
-        "month": {$month: '$date'}
+      {
+        $addFields: {
+          'year': { $year: '$date' },
+          'month': { $month: '$date' }
+        }
+      },
+      {
+        $match: {
+          year: searchedYear,
+          month: searchedMonth
+        }
+      },
+      {
+        $sort: { date: 1 }
       }
-    },
-    {
-      $match: {
-        year: searchedYear,
-        month: searchedMonth
-      }
-    },
-    {
-      $sort: {date: 1}
-    }
-  ])
+    ])
     .then(entries => {
-    const entriesFormalized = entries.map(entry => Entry.formalize(entry))
-    res.json(entriesFormalized)
+      const entriesFormalized = entries.map(entry => Entry.formalize(entry))
+      res.json(entriesFormalized)
     })
 })
 
@@ -65,9 +65,9 @@ app.post('/api/entries', (req, res) => {
 app.patch('/api/entries', (req, res) => {
   const body = req.body
   const buildObjectFromBody = body => ({
-    ...body.type && { type: body.type},
-    ...body.amount && { amount: body.amount},
-    ...body.date && { date: body.date}
+    ...body.type && { type: body.type },
+    ...body.amount && { amount: body.amount },
+    ...body.date && { date: body.date }
   })
   const modifiedEntry = buildObjectFromBody(body)
   Entry
@@ -93,7 +93,7 @@ app.delete('/api/entries/:id', (req, res) => {
       if (removedEntry) {
         res.json(Entry.formalize(removedEntry))
       } else {
-        res.status(404).json({ error: 'Entry with specified id is not found'})
+        res.status(404).json({ error: 'Entry with specified id is not found' })
       }
     })
     .catch(error => {
