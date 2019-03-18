@@ -62,7 +62,15 @@ app.patch('/api/entries', (req, res) => {
   Entry
     .findByIdAndUpdate(body.id, modifiedEntry, { new: true })
     .then(updatedNote => {
-      res.json(Entry.formalize(updatedNote))
+      if (updatedNote) {
+        res.json(Entry.formalize(updatedNote))
+      } else {
+        res.status(404).json({ error: 'Entry with provided id is not found' })
+      }
+    })
+    .catch(error => {
+      console.log('error:', error)
+      res.status(400).json({ error: 'Provided entry id is malformatted' })
     })
 })
 
