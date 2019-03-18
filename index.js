@@ -16,10 +16,10 @@ app.get('/api/entries', (req,res) => {
         searchedYear = Number(req.query.y)
         searchedMonth = Number(req.query.m) + 1
       } else {
-        res.status(400).json({ error: "Provided month must be between 0 and 11" })
+        return res.status(400).json({ error: "Provided month must be between 0 and 11" })
       }
     } else {
-      res.status(400).json({ error: "Provided year must be between 1970 and 2100" })
+      return res.status(400).json({ error: "Provided year must be between 1970 and 2100" })
     }
   }
   Entry
