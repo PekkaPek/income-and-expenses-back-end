@@ -49,6 +49,9 @@ app.post('/api/entries', (req, res) => {
     .then(savedEntry => {
       res.status(201).json(Entry.formalize(savedEntry))
     })
+    .catch( error => {
+      res.status(400).json({ error: error.message /*.errors.type.message */})
+    })
 })
 
 app.patch('/api/entries', (req, res) => {
