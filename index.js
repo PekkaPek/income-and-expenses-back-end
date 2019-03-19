@@ -10,6 +10,9 @@ app.use(bodyParser.json())
 app.get('/api/entries', (req,res) => {
   let searchedYear = new Date().getFullYear()
   let searchedMonth = new Date().getMonth() + 1
+  if (req.query.y && !req.query.m || !req.query.y && req.query.m) {
+    return res.status(400).json({ error: 'Both year and month must be provided or left out' })
+  }
   if (req.query.y && req.query.m) {
     if ( req.query.y >= 1970 && req.query.y <= 2100) {
       if (req.query.m >= 0 && req.query.m <= 11) {
