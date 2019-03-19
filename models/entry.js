@@ -1,14 +1,4 @@
 const mongoose = require('mongoose')
-const credentials = require('../credentials')
-
-const url = `mongodb://${credentials.username}:${credentials.password}@ds149732.mlab.com:49732/income-expenses-app-development`
-mongoose.connect(
-  url,
-  {
-    useNewUrlParser: true,
-    useFindAndModify: false
-  }
-)
 
 const EntrySchema = new mongoose.Schema({
   type: {
